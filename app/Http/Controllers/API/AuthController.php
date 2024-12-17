@@ -38,12 +38,14 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'تم التسجيل بنجاح',
+        $data = [
+
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user,
-        ], 201);
+        ];
+
+        return response()->api($data, 0, 'تم التسجيل بنجاح');
     }
 
     public function updateProfile(Request $request)

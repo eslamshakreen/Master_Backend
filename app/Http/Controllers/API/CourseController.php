@@ -9,28 +9,56 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $courses = Course::with(['category', 'teacher.user'])
             ->paginate(10);
 
-        return response()->api(CourseResource::collection($courses), 0, 'تم الحصول على الدورات بنجاح');
+        $ip = $request->ip();
+        $location = geoip($ip);
+        $country = $location->getAttribute('country');
+
+        $coursesData = $courses->map(function ($course) use ($country) {
+            if ($country === 'Libya') {
+                $price = $course->price_lyd . ' LYD';
+                $discount = $course->discount_price_lyd ? $course->discount_price_lyd . ' LYD' : null;
+            } else {
+                $price = $course->price_usd . ' USD';
+                $discount = $course->discount_price_usd ? $course->discount_price_usd . ' USD' : null;
+            }
+
+            return [
+                'course' => new CourseResource($course),
+                'original_price' => $price,
+                'discount_price' => $discount
+            ];
+        });
+
+        return response()->api($coursesData, 0, 'تم الحصول على الدورات بنجاح');
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $course = Course::with([
-            'category',
-            'teacher.user',
-            'lessons.episodes',
-        ])->find($id);
-
+        $course = Course::find($id)->with(['category', 'teacher.user']);
         if (!$course) {
             return response()->json(['message' => 'الدورة غير موجودة'], 404);
         }
 
-        return response()->api(new CourseResource($course), 0, 'تم الحصول على الدورة بنجاح');
+        $ip = $request->ip();
+        $location = geoip($ip);
+        $country = $location->getAttribute('country');
+
+        if ($country === 'Libya') {
+            $price = $course->price_lyd . ' LYD';
+            $discount = $course->discount_price_lyd ? $course->discount_price_lyd . ' LYD' : null;
+        } else {
+            $price = $course->price_usd . ' USD';
+            $discount = $course->discount_price_usd ? $course->discount_price_usd . ' USD' : null;
+        }
+
+        return response()->api(['course' => new CourseResource($course), 'original_price' => $price, 'discount_price' => $discount], 0, 'تم الحصول على الدورة بنجاح');
     }
+
 
 
 
@@ -60,4 +88,37 @@ class CourseController extends Controller
 
         return response()->json(['message' => 'تم تسجيلك في الدورة بنجاح'], 200);
     }
+
+    public function getEnrolledCourses(Request $request)
+    {
+        $user = $request->user();
+        $enrolledCourses = $user->enrolledCourses()->with(['category', 'teacher.user'])->get();
+
+        if ($enrolledCourses->isEmpty()) {
+            return response()->json(['message' => 'لا يوجد دورات مسجلة'], 404);
+        }
+
+        $ip = $request->ip();
+        $location = geoip($ip);
+        $country = $location->getAttribute('country');
+
+        $coursesData = $enrolledCourses->map(function ($course) use ($country) {
+            if ($country === 'Libya') {
+                $price = $course->price_lyd . ' LYD';
+                $discount = $course->discount_price_lyd ? $course->discount_price_lyd . ' LYD' : null;
+            } else {
+                $price = $course->price_usd . ' USD';
+                $discount = $course->discount_price_usd ? $course->discount_price_usd . ' USD' : null;
+            }
+
+            return [
+                'course' => new CourseResource($course),
+                'original_price' => $price,
+                'discount_price' => $discount
+            ];
+        });
+
+        return response()->api($coursesData, 0, 'تم الحصول على الدورات المسجلة بنجاح');
+    }
+
 }

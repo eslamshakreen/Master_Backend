@@ -13,7 +13,7 @@ class HeroResource extends Resource
     protected static ?string $model = Hero::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $navigationLabel = 'صور الواجهة (Hero Section)';
+    protected static ?string $navigationLabel = 'صور الواجهات (Home Page)';
     protected static ?string $pluralLabel = 'صور الواجهة';
     protected static ?string $modelLabel = 'صورة واجهة';
     protected static ?string $slug = 'heroes';
@@ -33,6 +33,7 @@ class HeroResource extends Resource
                         Hero::TYPE_EVENT => 'الاحداث',
                         Hero::TYPE_ADVERTISEMENT => 'الاعلانات',
                         Hero::TYPE_REVIEW => 'اراء المشتركين',
+                        Hero::TYPE_CALL_TO_ACTION => 'تواصل معنا',
                     ])
                     ->reactive(),
 
@@ -52,8 +53,7 @@ class HeroResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label('الصورة')
                     ->directory('hero_images')
-                    ->image()
-                    ->required(),
+                    ->image(),
 
                 Forms\Components\TextInput::make('order')
                     ->label('الترتيب')
@@ -74,6 +74,10 @@ class HeroResource extends Resource
                     ->label('صورة')
                     ->disk('public')
                     ->circular(),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('نوع المحتوى')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('العنوان')

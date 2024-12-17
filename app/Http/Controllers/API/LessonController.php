@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Episode;
+use App\Models\Enrollment;
 
 class LessonController extends Controller
 {
@@ -22,14 +23,44 @@ class LessonController extends Controller
         // dd($lesson);
 
         if (!$lesson) {
-            return response()->api([], 1, ['message' => 'the lesson not found'], 404);
+            return response()->api([], 1, ['message' => 'الدرس غير موجود'], 404);
         }
+
+        $enrollment = Enrollment::where('student_id', auth()->user()->id)
+            ->where('course_id', $lesson->course_id)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
 
         return response()->api(new LessonResource($lesson), 0, 'تم الحصول على الدرس بنجاح');
     }
 
+    public function getLessonsByCourse($id)
+    {
+
+
+        $lessons = Lesson::with(['episodes'])->where('course_id', $id)->get();
+
+        $courseId = $id; // Use the course ID directly from the method parameter
+        $enrollment = Enrollment::where('student_id', auth()->user()->id)
+            ->where('course_id', $courseId)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
+
+        return response()->api(LessonResource::collection($lessons), 0, 'تم الحصول على الدروس بنجاح');
+    }
+
     // تحديد الدرس كمكتمل
-    public function markCompleted(Request $request, $id)
+    public function markLessonCompleted(Request $request, $id)
     {
         $user = $request->user();
         $lesson = Lesson::find($id);
@@ -37,6 +68,16 @@ class LessonController extends Controller
         if (!$lesson) {
             return response()->api([], 1, ['message' => 'الدرس غير موجود'], 404);
         }
+
+        $enrollment = Enrollment::where('student_id', auth()->user()->id)
+            ->where('course_id', $lesson->course_id)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
 
         // تحقق مما إذا كان الطالب مسجلاً في الدورة
         if (!$user->isEnrolledInCourse($lesson->course_id)) {
@@ -49,26 +90,5 @@ class LessonController extends Controller
         return response()->api([], 0, ['message' => 'تم تحديد الدرس كمكتمل'], 200);
     }
 
-    public function markEpisodeCompleted(Request $request, $id)
-    {
-        if (!$request->user()) {
-            return response()->api([], 1, ['message' => 'يجب تسجيل الدخول'], 401);
-        }
-        $user = $request->user();
-        $episode = Episode::find($id);
 
-        if (!$episode) {
-            return response()->api([], 1, ['message' => 'الحلقة غير موجودة'], 404);
-        }
-
-        // تحقق مما إذا كان الطالب مسجلاً في الدورة
-        if (!$user->isEnrolledInCourse($episode->lesson->course_id)) {
-            return response()->api([], 1, ['message' => 'أنت غير مسجل في هذه الدورة'], 403);
-        }
-
-        // تحديد الحلقة كمكتملة للطالب
-        $user->completedEpisodes()->attach($episode->id);
-
-        return response()->api([], 0, ['message' => 'تم تحديد الحلقة كمكتملة'], 200);
-    }
 }

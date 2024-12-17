@@ -58,7 +58,7 @@ class User extends Authenticatable
     // الدورات المسجل فيها
     public function enrolledCourses()
     {
-        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id')->withTimestamps();
+        return $this->belongsToMany(Course::class, 'enrollments', 'student_id', 'course_id')->withTimestamps();
     }
 
 

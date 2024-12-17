@@ -13,12 +13,13 @@ class Enrollment extends Model
         'course_id',
         'enrollment_date',
         'completion_status',
+        'status',
     ];
 
     // العلاقات
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 
     public function course()

@@ -43,15 +43,22 @@ class CourseResource extends Resource
                     ->rows(5)
                     ->required(),
 
-                Forms\Components\TextInput::make('original_price')
-                    ->label('السعر الأصلي')
-                    ->numeric()
-                    ->required(),
+                Forms\Components\TextInput::make('price_lyd')
+                    ->label('السعر بالدينار الليبي')
+                    ->numeric()->default(0),
 
-                Forms\Components\TextInput::make('discounted_price')
-                    ->label('السعر بعد التخفيض')
+                Forms\Components\TextInput::make('discounted_price_lyd')
+                    ->label('السعر بالدينار الليبي بالخصم')
+                    ->numeric()->default(0),
+
+                Forms\Components\TextInput::make('price_usd')
+                    ->label('السعر بالدولار الأمريكي')
                     ->numeric()
-                    ->nullable(),
+                    ->default(0),
+
+                Forms\Components\TextInput::make('discounted_price_usd')
+                    ->label('السعر بالدولار الأمريكي بالخصم')
+                    ->numeric()->default(0),
 
                 Forms\Components\FileUpload::make('thumbnail')
                     ->label('صورة مصغرة')
@@ -107,13 +114,13 @@ class CourseResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('original_price')
-                    ->label('السعر الأصلي')
-                    ->money('USD')
+                Tables\Columns\TextColumn::make('price_lyd')
+                    ->label('السعر بالدينار الليبي')
+                    ->money('LYD')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('discounted_price')
-                    ->label('السعر بعد التخفيض')
+                Tables\Columns\TextColumn::make('price_usd')
+                    ->label('السعر بالدولار الأمريكي')
                     ->money('USD')
                     ->sortable(),
 
@@ -126,7 +133,7 @@ class CourseResource extends Resource
                     ->dateTime('d/m/Y'),
             ])
             ->filters([
-                // إضافة فلاتر إذا لزم الأمر
+                //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()

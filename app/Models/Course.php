@@ -10,8 +10,10 @@ class Course extends Model
     protected $fillable = [
         'title',
         'description',
-        'original_price',
-        'discounted_price',
+        'price_lyd',
+        'price_usd',
+        'discounted_price_lyd',
+        'discounted_price_usd',
         'thumbnail',
         'number_of_episodes',
         'category_id',
@@ -31,6 +33,11 @@ class Course extends Model
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class);
     }
 
     public function enrollments()

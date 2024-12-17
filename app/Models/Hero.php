@@ -16,6 +16,8 @@ class Hero extends Model
     const TYPE_ADVERTISEMENT = 'advertisement';
     const TYPE_EVENT = 'event';
 
+    const TYPE_CALL_TO_ACTION = 'call to action';
+
 
 
     protected $fillable = [
