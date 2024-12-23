@@ -12,11 +12,18 @@ class LeadController extends Controller
 {
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:leads,email',
             'phone' => 'nullable|string|max:255'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $data = $validator->validated();
+
 
         // إنشاء Lead
         $lead = Lead::create($data);

@@ -17,6 +17,9 @@ class Teacher extends Model
         'user_id',
         'commission_percentage',
         'total_earnings',
+        'image',
+        'bio',
+        'job_title',
     ];
 
     public function user()

@@ -15,6 +15,7 @@ class Course extends Model
         'discounted_price_lyd',
         'discounted_price_usd',
         'thumbnail',
+        'trial_video',
         'number_of_episodes',
         'category_id',
         'teacher_id',
@@ -54,6 +55,12 @@ class Course extends Model
     {
         return $this->hasMany(Certificate::class);
     }
+
+    public function testimonials()
+    {
+        return $this->hasMany(CourseTestimonial::class);
+    }
+
 
     public function students()
     {

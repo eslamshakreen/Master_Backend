@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Episode;
 use App\Http\Resources\EpisodeResource;
+use App\Models\Lesson;
+use App\Models\Enrollment;
 
 class EpisodeController extends Controller
 {
@@ -59,5 +61,56 @@ class EpisodeController extends Controller
         $user->completedEpisodes()->attach($episode->id);
 
         return response()->api([], 0, ['message' => 'تم تحديد الحلقة كمكتملة'], 200);
+    }
+
+    public function getCompletedEpisodesByCourse(Request $request)
+    {
+        $user = $request->user();
+        $enrollment = Enrollment::where('student_id', auth()->user()->id)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
+        $completedEpisodes = $user->completedEpisodes()->where('course_id', $enrollment->course_id)->get();
+
+        return response()->api(EpisodeResource::collection($completedEpisodes), 0, 'تم الحصول على الحلقات المكتملة بنجاح');
+    }
+
+
+    public function getEpisodesByCourse(Request $request, $courseId)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->api([], 1, ['message' => 'يجب تسجيل الدخول'], 401);
+        }
+
+        $enrollment = Enrollment::where('student_id', $user->id)
+            ->where('course_id', $courseId)
+            ->where('status', 'active')
+            ->first();
+
+
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
+        $episodes = Episode::whereHas('lesson', function ($query) use ($courseId) {
+            $query->where('course_id', $courseId);
+        })->get();
+
+
+
+        $episodesData = $episodes->map(function ($episode) {
+            return [
+                'episode' => new EpisodeResource($episode),
+            ];
+        });
+
+        return response()->api($episodesData, 0, 'تم الحصول على الحلقات بنجاح');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Models\Lesson;
+use \App\Http\Resources\LessonResource;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -21,10 +23,10 @@ class CourseController extends Controller
         $coursesData = $courses->map(function ($course) use ($country) {
             if ($country === 'Libya') {
                 $price = $course->price_lyd . ' LYD';
-                $discount = $course->discount_price_lyd ? $course->discount_price_lyd . ' LYD' : null;
+                $discount = $course->discounted_price_lyd ? $course->discounted_price_lyd . ' LYD' : null;
             } else {
                 $price = $course->price_usd . ' USD';
-                $discount = $course->discount_price_usd ? $course->discount_price_usd . ' USD' : null;
+                $discount = $course->discounted_price_usd ? $course->discounted_price_usd . ' USD' : null;
             }
 
             return [
@@ -39,27 +41,30 @@ class CourseController extends Controller
 
     public function show(Request $request, $id)
     {
-        $course = Course::find($id)->with(['category', 'teacher.user']);
+
+
+        $course = Course::with(['category', 'teacher.user', 'lessons.episodes', 'testimonials'])->find($id);
         if (!$course) {
             return response()->json(['message' => 'الدورة غير موجودة'], 404);
         }
-
         $ip = $request->ip();
         $location = geoip($ip);
         $country = $location->getAttribute('country');
-
         if ($country === 'Libya') {
             $price = $course->price_lyd . ' LYD';
-            $discount = $course->discount_price_lyd ? $course->discount_price_lyd . ' LYD' : null;
+            $discount = $course->discounted_price_lyd ? $course->discounted_price_lyd . ' LYD' : null;
         } else {
             $price = $course->price_usd . ' USD';
-            $discount = $course->discount_price_usd ? $course->discount_price_usd . ' USD' : null;
+            $discount = $course->discounted_price_usd ? $course->discounted_price_usd . ' USD' : null;
         }
-
-        return response()->api(['course' => new CourseResource($course), 'original_price' => $price, 'discount_price' => $discount], 0, 'تم الحصول على الدورة بنجاح');
+        $courseData = [
+            'course' => (new CourseResource($course))->toArrayWithoutVideoUrl($request),
+            'original_price' => $price,
+            'discount_price' => $discount,
+            // Remove the separate 'lessons' key
+        ];
+        return response()->api($courseData, 0, 'تم الحصول على الدورة بنجاح');
     }
-
-
 
 
     public function enroll(Request $request, $id)
@@ -120,5 +125,7 @@ class CourseController extends Controller
 
         return response()->api($coursesData, 0, 'تم الحصول على الدورات المسجلة بنجاح');
     }
+
+
 
 }

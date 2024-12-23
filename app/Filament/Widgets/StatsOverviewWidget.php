@@ -15,7 +15,7 @@ class StatsOverviewWidget extends BaseWidget
     {
         $usersCount = User::count();
         $coursesCount = Course::count();
-        $totalEarnings = Payment::sum('amount_paid'); // أفترض لديك جدول payments
+        $totalEarnings = Payment::sum('paid_amount'); // أفترض لديك جدول payments
 
         return [
             Card::make('عدد المستخدمين', $usersCount)

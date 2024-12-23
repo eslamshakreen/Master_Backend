@@ -8,7 +8,7 @@ use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\HeroController;
 use App\Http\Controllers\API\EpisodeController;
 use App\Http\Controllers\API\EnrollmentController;
-
+use App\Http\Controllers\API\AboutUsController;
 use App\Http\Controllers\API\LeadController;
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +33,7 @@ Route::prefix('courses')->group(function () {
 
 });
 Route::get('/info', [HeroController::class, 'index']);
+Route::get('/about-us', [AboutUsController::class, 'index']);
 Route::get('/footer', [HeroController::class, 'showFooter']);
 
 Route::prefix('student')->group(function () {
@@ -58,10 +59,12 @@ Route::prefix('student')->group(function () {
         Route::prefix('episodes')->group(function () {
             Route::get('/{id}', [EpisodeController::class, 'show']);
             Route::get('/lessons/{id}', [EpisodeController::class, 'getEpisodesByLesson']);
+            Route::get('/lessons/{id}/completed', [EpisodeController::class, 'getCompletedEpisodesByCourse']);
             Route::post('/{id}/mark-completed', [EpisodeController::class, 'markEpisodeCompleted']);
         });
 
         Route::prefix('courses')->group(function () {
+            Route::get('/{id}/lessons/completed', [EpisodeController::class, 'getEpisodesByCourse']);
             Route::get('/enrolled', [CourseController::class, 'getEnrolledCourses']);
             Route::post('/{course_id}/enroll', [EnrollmentController::class, 'enroll']);
 

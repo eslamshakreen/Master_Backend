@@ -16,7 +16,7 @@ class EnrollmentResource extends Resource
     protected static ?string $navigationLabel = 'الاشتراكات';
     protected static ?string $pluralLabel = 'الاشتراكات';
     protected static ?string $modelLabel = 'اشتراك';
-    protected static ?string $navigationGroup = 'إدارة المستخدمين والدورات';
+    protected static ?string $navigationGroup = 'إدارة المستخدمين الدفعات';
 
     public static function form(Forms\Form $form): Forms\Form
     {
@@ -31,7 +31,7 @@ class EnrollmentResource extends Resource
                     ])
                     ->required(),
                 Forms\Components\Select::make('student_id')
-                    ->label('المستخدم')
+                    ->label('الطالب')
                     ->options(function () {
                         return \App\Models\User::where('role', 'student')->pluck('name', 'id');
                     })
@@ -54,26 +54,14 @@ class EnrollmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.name')
-                    ->label('الطالب')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('course.title')
-                    ->label('الدورة')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
-                    ->searchable()
-                    ->sortable()
-                    ->color(fn($state) => $state === 'active' ? 'success' : 'danger'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
-                    ->dateTime('d/m/Y')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('student.name')->label('الطالب'),
+                Tables\Columns\TextColumn::make('course.title')->label('الدورة'),
+                Tables\Columns\TextColumn::make('payment.total_amount')->label('المبلغ الكلي'),
+                Tables\Columns\TextColumn::make('payment.paid_amount')->label('المدفوع'),
+                Tables\Columns\TextColumn::make('payment.remaining_amount')->label('المتبقي'),
+                Tables\Columns\IconColumn::make('is_fully_paid')
+                    ->label('مكتمل الدفع؟')
+                    ->boolean(fn($record) => $record->payment && $record->payment->remaining_amount <= 0),
             ])
             ->filters([
                 // يمكنك إضافة فلاتر حسب الحالة

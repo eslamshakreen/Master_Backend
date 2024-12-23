@@ -28,7 +28,6 @@ class EpisodeResource extends Resource
                 Forms\Components\Select::make('lesson_id')
                     ->label('الدرس')
                     ->relationship('lesson', 'title')
-                    ->searchable()
                     ->required(),
 
                 Forms\Components\TextInput::make('title')

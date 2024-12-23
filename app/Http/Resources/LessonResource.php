@@ -26,4 +26,18 @@ class LessonResource extends JsonResource
             'episodes' => EpisodeResource::collection($this->whenLoaded('episodes')),
         ];
     }
+
+    public function toArrayWithoutVideoUrl($request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'course_id' => $this->course_id,
+            'lesson_order' => $this->lesson_order,
+            'episodes' => EpisodeResource::collection($this->whenLoaded('episodes'))->map(function ($episode) {
+                return collect($episode)->except(['video_url']);
+            }),
+        ];
+    }
 }

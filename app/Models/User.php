@@ -18,6 +18,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'phone',
+        'image',
+        'age',
+        'gender',
+        'address',
         // 'registration_date', // Laravel يضيف created_at تلقائيًا
     ];
 

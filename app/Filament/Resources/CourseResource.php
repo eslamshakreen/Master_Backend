@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
+use App\Filament\Resources\CourseResource\RelationManagers\TestimonialsRelationManager;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Resources\Resource;
@@ -26,7 +27,7 @@ class CourseResource extends Resource
     protected static ?string $modelLabel = 'دورة';
     protected static ?string $slug = 'courses';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'إدارة المحتوى';
 
     public static function form(Forms\Form $form): Forms\Form
@@ -65,6 +66,10 @@ class CourseResource extends Resource
                     ->image()
                     ->directory('thumbnails')
                     ->nullable(),
+
+                Forms\Components\Textarea::make('trial_video')
+                    ->label('فيديو التجريبي')
+                    ->required(),
 
                 Forms\Components\Select::make('category_id')
                     ->label('التصنيف')
@@ -153,6 +158,7 @@ class CourseResource extends Resource
     {
         return [
             LessonsRelationManager::class,
+            TestimonialsRelationManager::class,
         ];
     }
 
