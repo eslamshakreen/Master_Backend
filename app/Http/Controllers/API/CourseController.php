@@ -43,7 +43,7 @@ class CourseController extends Controller
     {
 
 
-        $course = Course::with(['category', 'teacher.user', 'lessons.episodes', 'testimonials'])->find($id);
+        $course = Course::with(['category', 'teacher.user', 'lessons.episodes'])->find($id);
         if (!$course) {
             return response()->json(['message' => 'الدورة غير موجودة'], 404);
         }
@@ -97,7 +97,7 @@ class CourseController extends Controller
     public function getEnrolledCourses(Request $request)
     {
         $user = $request->user();
-        $enrolledCourses = $user->enrolledCourses()->with(['category', 'teacher.user'])->get();
+        $enrolledCourses = $user->enrolledCourses()->with(['category', 'teacher.user', 'enrollments'])->get();
 
         if ($enrolledCourses->isEmpty()) {
             return response()->json(['message' => 'لا يوجد دورات مسجلة'], 404);

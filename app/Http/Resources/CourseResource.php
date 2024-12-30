@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class CourseResource extends JsonResource
 {
     // تحويل الدورة إلى مصفوفة
@@ -23,6 +24,10 @@ class CourseResource extends JsonResource
             'category' => new CategoryResource($this->whenLoaded('category')),
             'teacher' => new TeacherResource($this->whenLoaded('teacher')),
             'testimonials' => TestimonialResource::collection(resource: $this->whenLoaded('testimonials')),
+            'enrollment_state' => $this->whenLoaded('enrollments', function () {
+                $enrollment = $this->enrollments->first();
+                return $enrollment->status;
+            }),
 
             'number_of_episodes' => $this->number_of_episodes,
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),

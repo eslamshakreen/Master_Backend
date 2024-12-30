@@ -43,8 +43,8 @@ Route::prefix('student')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/profile', [AuthController::class, 'studentProfile']);
-        Route::post('/update-profile', [AuthController::class, 'updateStudentProfile']);
-        Route::post('/update-password', [AuthController::class, 'updatePassword']);
+        Route::put('/update-profile', [AuthController::class, 'updateProfile']);
+        Route::put('/update-password', [AuthController::class, 'updatePassword']);
         Route::post('/logout', [AuthController::class, 'logoutStudent']);
 
 

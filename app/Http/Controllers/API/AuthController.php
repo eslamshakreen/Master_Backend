@@ -15,12 +15,27 @@ class AuthController extends Controller
     public function registerStudent(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            // 'password_confirmation' => 'required|same:password',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|string|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'phone' => 'required|string|max:255|unique:users',
+                'age' => 'required|string|max:255',
+                'gender' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'country' => 'required|string|max:255',
+                'degree' => 'string|max:255',
+                'company' => 'string|max:255',
+                'job_title' => 'string|max:255',
+
+
+
+                // 'password_confirmation' => 'required|same:password',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->api([], 1, $e->validator->errors(), 422);
+        }
 
         // dd($validatedData);
         // إنشاء مستخدم جديد بدور 'student'
@@ -50,23 +65,37 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        if (!$request->user()) {
+        $user = $request->user();
+
+        if (!$user) {
             return response()->api([], 1, ['message' => 'يجب تسجيل الدخول'], 401);
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255',
-        ]);
+        // Use try-catch to handle validation errors
+        try {
+            $validatedData = $request->validate([
+                'name' => 'string|max:255',
+                'email' => 'email|string|max:255',
+                'phone' => 'string|max:255',
+                'phone_2' => 'string|max:255',
+                'country' => 'string|max:255',
+                'degree' => 'string|max:255',
+                'company' => 'string|max:255',
+                'job_title' => 'string|max:255',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image file
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->api([], 1, $e->errors(), 422);
+        }
 
-        $user = User::find(auth()->user()->id);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('students', 'public');
+            $validatedData['image'] = $imagePath;
+        }
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email
-        ]);
+        $user->update(array_filter($validatedData));
 
-        return response()->api($user, 0, 'تم التحديث بنجاح');
+        return response()->api($user, 0, 'تم تحديث الملف الشخصي بنجاح');
     }
 
     public function updatePassword(Request $request)
