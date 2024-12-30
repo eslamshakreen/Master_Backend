@@ -34,6 +34,14 @@ class TeacherResource extends Resource
                     ->searchable()
                     ->required(),
 
+                Forms\Components\TextInput::make('bio')
+                    ->label('السيرة الذاتية')
+                    ->required(),
+
+                Forms\Components\TextInput::make('job_title')
+                    ->label('الوظيفة')
+                    ->required(),
+
                 Forms\Components\TextInput::make('commission_percentage')
                     ->label('النسبة المئوية للأرباح')
                     ->numeric()

@@ -91,4 +91,20 @@ class LessonController extends Controller
     }
 
 
+    public function getCompletedLessonsByCourse(Request $request)
+    {
+        $user = $request->user();
+        $enrollment = Enrollment::where('student_id', auth()->user()->id)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$enrollment) {
+            return response()->json(['message' => 'أنت غير مسجل أو اشتراكك قيد الانتظار'], 403);
+        }
+
+        $completedLessons = $user->completedLessons()->where('course_id', $enrollment->course_id)->get();
+
+        return response()->api(LessonResource::collection($completedLessons), 0, 'تم الحصول على الدروس المكتملة بنجاح');
+    }
+
 }

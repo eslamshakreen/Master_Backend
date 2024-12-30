@@ -17,9 +17,9 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function enrollments()
+    public function activeEnrollments()
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(Enrollment::class)->where('state', 'active');
     }
 
     public function payments()

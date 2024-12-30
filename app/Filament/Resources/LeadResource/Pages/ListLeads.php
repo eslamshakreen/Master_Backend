@@ -16,4 +16,22 @@ class ListLeads extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Resources\LeadResource\Widgets\CrmStatsWidget::class,
+        ];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+
+            \App\Filament\Resources\LeadResource\Widgets\ConversionChartWidget::class,
+            \App\Filament\Resources\LeadResource\Widgets\RecentCallsWidget::class, // جدول اخر المكالمات
+        ];
+    }
+
+
 }

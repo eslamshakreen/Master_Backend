@@ -17,7 +17,7 @@ class HeroResource extends Resource
     protected static ?string $pluralLabel = 'صور الواجهة';
     protected static ?string $modelLabel = 'صورة واجهة';
     protected static ?string $slug = 'heroes';
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    protected static ?string $navigationGroup = 'إدارة الموقع';
     protected static ?int $navigationSort = 1;
 
     public static function form(Forms\Form $form): Forms\Form

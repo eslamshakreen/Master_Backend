@@ -6,8 +6,7 @@ use App\Models\User;
 use Filament\Tables;
 use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
-use \Illuminate\Database\Eloquent\Relations\Relation;
-
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class UsersWithoutCoursesWidget extends TableWidget
 {
@@ -15,7 +14,7 @@ class UsersWithoutCoursesWidget extends TableWidget
 
     protected static ?int $sort = 2;
 
-    protected function getTableQuery(): Builder|Relation|null
+    protected function getTableQuery(): Builder|Relation
     {
         // جلب المستخدمين الذين ليس لديهم دورات مسجلين فيها
         // نفترض أن هناك علاقة في User: enrolledCourses()
@@ -41,4 +40,6 @@ class UsersWithoutCoursesWidget extends TableWidget
                 ->sortable(),
         ];
     }
+
+
 }

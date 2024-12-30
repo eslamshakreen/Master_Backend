@@ -38,6 +38,33 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
 
+                Forms\Components\TextInput::make('phone')
+                    ->label('الهاتف')
+                    ->nullable()
+                    ->unique(ignoreRecord: true),
+
+                Forms\Components\TextInput::make('address')
+                    ->label('العنوان')
+                    ->nullable(),
+
+                Forms\Components\Select::make('gender')
+                    ->label('الجنس')
+                    ->options([
+                        'male' => 'ذكر',
+                        'female' => 'انثى',
+
+                    ]),
+
+                Forms\Components\TextInput::make('age')
+                    ->label('العمر')
+                    ->nullable(),
+
+                Forms\Components\FileUpload::make('image')
+                    ->label('صورة المستخدم')
+                    ->image()
+                    ->directory('users')
+                    ->nullable(),
+
                 Forms\Components\TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()

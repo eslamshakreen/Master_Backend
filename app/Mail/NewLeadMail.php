@@ -22,10 +22,16 @@ class NewLeadMail extends Mailable
     {
         // نفترض لديك ملف PDF في storage/app/public/pdf/free-lecture.pdf
         // تأكد من إنشاء المسار ورفع الملف
-        return $this->subject('محاضرة مجانية من منصتنا')
-            ->view('emails.new-lead') // سنتحدث عنه بعد قليل
-            ->attachFromStorage('public/pdf/Coursera RLZ4Y9FVBTEY.pdf', 'Coursera RLZ4Y9FVBTEY.pdf', [
-                'mime' => 'application/pdf',
+
+
+        $mail = $this->subject('محاضرة مجانية من منصتنا')
+            ->view('emails.new-lead')
+            ->with([
+                'lead' => $this->lead,
             ]);
+
+        $mail->attachFromStorageDisk('public', 'pdf/Coursera RLZ4Y9FVBTEY.pdf');
+
+        return $mail;
     }
 }
