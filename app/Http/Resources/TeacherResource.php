@@ -14,7 +14,7 @@ class TeacherResource extends JsonResource
             'name' => $this->user->name,
             'email' => $this->user->email,
             'commission_percentage' => $this->commission_percentage,
-            'image' => $this->user->image ? 'storage/' . $this->user->image : null,
+            'image' => $this->image ? 'storage/' . $this->image : null,
             'bio' => $this->bio,
             'job_title' => $this->job_title,
 

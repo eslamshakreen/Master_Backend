@@ -34,13 +34,19 @@ class TeacherResource extends Resource
                     ->searchable()
                     ->required(),
 
-                Forms\Components\TextInput::make('bio')
+                Forms\Components\Textarea::make('bio')
                     ->label('السيرة الذاتية')
                     ->required(),
 
                 Forms\Components\TextInput::make('job_title')
                     ->label('الوظيفة')
                     ->required(),
+
+                Forms\Components\FileUpload::make('image')
+                    ->label('صورة المستخدم')
+                    ->image()
+                    ->directory('teachers')
+                    ->nullable(),
 
                 Forms\Components\TextInput::make('commission_percentage')
                     ->label('النسبة المئوية للأرباح')

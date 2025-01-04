@@ -41,15 +41,15 @@ class CourseController extends Controller
 
     public function show(Request $request, $id)
     {
-
-
-        $course = Course::with(['category', 'teacher.user', 'lessons.episodes'])->find($id);
+        $course = Course::with(['category', 'teacher.user', 'lessons.episodes', 'testimonials'])->find($id);
         if (!$course) {
             return response()->json(['message' => 'الدورة غير موجودة'], 404);
         }
+
         $ip = $request->ip();
         $location = geoip($ip);
         $country = $location->getAttribute('country');
+
         if ($country === 'Libya') {
             $price = $course->price_lyd . ' LYD';
             $discount = $course->discounted_price_lyd ? $course->discounted_price_lyd . ' LYD' : null;
@@ -57,13 +57,14 @@ class CourseController extends Controller
             $price = $course->price_usd . ' USD';
             $discount = $course->discounted_price_usd ? $course->discounted_price_usd . ' USD' : null;
         }
+
         $courseData = [
             'course' => (new CourseResource($course))->toArrayWithoutVideoUrl($request),
             'original_price' => $price,
             'discount_price' => $discount,
-            // Remove the separate 'lessons' key
         ];
-        return response()->api($courseData, 0, 'تم الحصول على الدورة بنجاح');
+
+        return response()->api($courseData, 0, 'تم الحصول على الدورات بنجاح');
     }
 
 
