@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 
+use function Symfony\Component\String\b;
+
 class EnrollmentResource extends Resource
 {
     protected static ?string $model = Enrollment::class;
@@ -56,6 +58,11 @@ class EnrollmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('student.name')->label('الطالب'),
                 Tables\Columns\TextColumn::make('course.title')->label('الدورة'),
+                Tables\Columns\IconColumn::make('status')
+                    ->label('الحالة')
+
+                    ->boolean(fn($record) => $record->status == 'pending' ? false : true),
+
                 Tables\Columns\TextColumn::make('payment.total_amount')->label('المبلغ الكلي'),
                 Tables\Columns\TextColumn::make('payment.paid_amount')->label('المدفوع'),
                 Tables\Columns\TextColumn::make('payment.remaining_amount')->label('المتبقي'),
@@ -69,6 +76,10 @@ class EnrollmentResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()->label('تعديل الحالة'),
                 Tables\Actions\DeleteAction::make()->label('حذف'),
+                Tables\Actions\Action::make('EnrollInCategory')
+                    ->label('تسجيل طالب في فئة')
+                    ->url(static::class::getUrl('enroll-in-category'))
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()->label('حذف المحدد'),
@@ -88,6 +99,8 @@ class EnrollmentResource extends Resource
             'index' => Pages\ListEnrollments::route('/'),
             'create' => Pages\CreateEnrollment::route('/create'),
             'edit' => Pages\EditEnrollment::route('/{record}/edit'),
+            'enroll-in-category' => Pages\EnrollInCategory::route('/enroll-in-category'),
+
         ];
     }
 }

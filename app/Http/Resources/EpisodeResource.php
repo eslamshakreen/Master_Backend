@@ -16,6 +16,7 @@ class EpisodeResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'video_url' => $this->video_url,
+            'pdf' => $this->pdf ? 'storage/' . $this->pdf : null,
             'episode_order' => $this->episode_order,
             'is_completed' => $this->isCompletedByUser($request->user()),
         ];

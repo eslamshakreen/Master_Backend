@@ -45,6 +45,12 @@ class EpisodeResource extends Resource
                     ->url()
                     ->required(),
 
+                Forms\Components\FileUpload::make('pdf')
+                    ->label('ملف PDF')
+                    ->directory('pdf')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->nullable(),
+
                 Forms\Components\TextInput::make('episode_order')
                     ->label('ترتيب الحلقة')
                     ->numeric()

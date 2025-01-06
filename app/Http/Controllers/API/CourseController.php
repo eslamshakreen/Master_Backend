@@ -16,9 +16,12 @@ class CourseController extends Controller
         $courses = Course::with(['category', 'teacher.user'])
             ->paginate(10);
 
-        $ip = $request->ip();
-        $location = geoip($ip);
-        $country = $location->getAttribute('country');
+        // $ip = $request->ip();
+        // $location = geoip($ip);
+        // dd($location);
+        // $country = $location->getAttribute('country');
+        $country = 'Libya';
+
 
         $coursesData = $courses->map(function ($course) use ($country) {
             if ($country === 'Libya') {
@@ -104,9 +107,11 @@ class CourseController extends Controller
             return response()->json(['message' => 'لا يوجد دورات مسجلة'], 404);
         }
 
-        $ip = $request->ip();
-        $location = geoip($ip);
-        $country = $location->getAttribute('country');
+        // $ip = $request->ip();
+        // $location = geoip($ip);
+        // dd($location);
+        // $country = $location->getAttribute('country');
+        $country = 'Libya';
 
         $coursesData = $enrolledCourses->map(function ($course) use ($country) {
             if ($country === 'Libya') {

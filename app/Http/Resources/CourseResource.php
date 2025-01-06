@@ -25,8 +25,9 @@ class CourseResource extends JsonResource
             'teacher' => new TeacherResource($this->whenLoaded('teacher')),
             'testimonials' => TestimonialResource::collection(resource: $this->whenLoaded('testimonials')),
             'enrollment_state' => $this->whenLoaded('enrollments', function () {
-                $enrollment = $this->enrollments->first();
-                return $enrollment->status;
+                $user = auth()->user();
+                $enrollment = $this->enrollments->where('student_id', $user->id)->first();
+                return $enrollment ? $enrollment->status : null;
             }),
 
             'number_of_episodes' => $this->number_of_episodes,

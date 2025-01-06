@@ -72,7 +72,7 @@ class CourseResource extends Resource
                     ->required(),
 
                 Forms\Components\Select::make('category_id')
-                    ->label('التصنيف')
+                    ->label('الاكاديمية')
                     ->options(\App\Models\Category::pluck('name', 'id'))
                     ->searchable()
                     ->required(),

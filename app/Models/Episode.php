@@ -12,6 +12,7 @@ class Episode extends Model
         'title',
         'description',
         'video_url',
+        'pdf',
         'lesson_id',
         'episode_order',
     ];

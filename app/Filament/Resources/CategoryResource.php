@@ -13,9 +13,9 @@ class CategoryResource extends Resource
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationLabel = 'التصنيفات';
-    protected static ?string $pluralLabel = 'التصنيفات';
-    protected static ?string $modelLabel = 'تصنيف';
+    protected static ?string $navigationLabel = 'الاكاديميات';
+    protected static ?string $pluralLabel = 'الاكاديميات';
+    protected static ?string $modelLabel = 'اكادمية';
     protected static ?string $slug = 'categories';
 
     protected static ?int $navigationSort = 3;
@@ -26,12 +26,12 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('اسم التصنيف')
+                    ->label('اسم الاكاديمية')
                     ->required()
                     ->maxLength(255),
 
                 Forms\Components\Textarea::make('description')
-                    ->label('وصف التصنيف')
+                    ->label('وصف الاكاديمية')
                     ->rows(5)
                     ->nullable(),
             ]);
@@ -42,12 +42,12 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم التصنيف')
+                    ->label('اسم الاكاديمية')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('description')
-                    ->label('وصف التصنيف')
+                    ->label('وصف الاكاديمية')
                     ->limit(50),
             ])
             ->filters([
