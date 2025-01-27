@@ -59,10 +59,21 @@ class HeroResource extends Resource
                     ->label('الترتيب')
                     ->numeric()
                     ->default(0)
-                    ->helperText('كلما كان الرقم أصغر، ظهرت الصورة في مقدمة العرض.')
-                ,
+                    ->helperText('كلما كان الرقم أصغر، ظهرت الصورة في مقدمة العرض.'),
 
+                Forms\Components\Toggle::make('is_call_to_action_visible')
+                    ->label('تفعيل (Call to action)')
+                    ->default(true),
 
+                Forms\Components\TextInput::make('call_to_action_link')
+                    ->label('رابط (Call to action)')
+                    ->maxLength(255)
+                    ->visible(fn(callable $get) => $get('is_call_to_action_visible')),
+
+                Forms\Components\TextInput::make('call_to_action_title')
+                    ->label('عنوان (Call to action)')
+                    ->maxLength(255)
+                    ->visible(fn(callable $get) => $get('is_call_to_action_visible')),
             ]);
     }
 

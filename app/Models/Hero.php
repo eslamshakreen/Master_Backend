@@ -27,5 +27,8 @@ class Hero extends Model
         'image',
         'order',
         'type',
+        'is_call_to_action_visible',
+        'call_to_action_link',
+        'call_to_action_title',
     ];
 }

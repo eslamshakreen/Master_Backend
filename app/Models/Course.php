@@ -19,6 +19,23 @@ class Course extends Model
         'number_of_episodes',
         'category_id',
         'teacher_id',
+        'is_price_visible',
+        'is_discount_visible',
+        'headline_one',
+        'headline_two',
+        'headline_three',
+        'description_one',
+        'description_two',
+        'description_three',
+        'image_one',
+        'image_two',
+        'image_three',
+        'call_to_action_one',
+        'call_to_action_two',
+        'call_to_action_three',
+        'call_to_action_link_one',
+        'call_to_action_link_two',
+        'call_to_action_link_three',
     ];
 
     public function category()

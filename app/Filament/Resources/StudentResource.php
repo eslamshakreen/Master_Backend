@@ -32,6 +32,43 @@ class StudentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->label('الاسم')->required(),
                 Forms\Components\TextInput::make('email')->label('البريد الإلكتروني')->email()->required(),
+                Forms\Components\TextInput::make('password')
+                    ->label('كلمة المرور')
+                    ->password()
+                    ->required(),
+                Forms\Components\TextInput::make('phone')
+                    ->label('رقم الهاتف')
+                    ->tel(),
+                Forms\Components\FileUpload::make('image')
+                    ->label('الصورة')
+                    ->image()
+                    ->directory('images')
+                    ->nullable(),
+                Forms\Components\TextInput::make('age')
+                    ->label('العمر')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\Select::make('gender')
+                    ->label('الجنس')
+                    ->options([
+                        'male' => 'ذكر',
+                        'female' => 'أنثى',
+                    ])
+                    ->required(),
+                Forms\Components\TextInput::make('address')
+                    ->label('العنوان'),
+                Forms\Components\TextInput::make('country')
+                    ->label('البلد'),
+                Forms\Components\TextInput::make('phone_2')
+                    ->label('رقم الهاتف الثاني')
+                    ->tel()
+                    ->nullable(),
+                Forms\Components\TextInput::make('degree')
+                    ->label('الدرجة العلمية'),
+                Forms\Components\TextInput::make('company')
+                    ->label('الشركة'),
+                Forms\Components\TextInput::make('job_title')
+                    ->label('المسمى الوظيفي'),
                 // يمكنك إضافة حقول أخرى إذا أردت
             ]);
     }

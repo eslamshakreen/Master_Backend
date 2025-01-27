@@ -70,8 +70,8 @@ class UserResource extends Resource
                     ->password()
                     ->required(fn(string $context) => $context === 'create')
                     ->maxLength(255)
-                    ->dehydrateStateUsing(fn($state) => !empty ($state) ? Hash::make($state) : null)
-                    ->dehydrated(fn($state) => !empty ($state)),
+                    ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null)
+                    ->dehydrated(fn($state) => !empty($state)),
 
                 Forms\Components\Select::make('role')
                     ->label('الدور')
@@ -126,6 +126,11 @@ class UserResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->where('role', '=', 'student');
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -141,6 +146,7 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
 
 
 }

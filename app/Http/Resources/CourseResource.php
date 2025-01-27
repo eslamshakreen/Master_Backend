@@ -30,6 +30,32 @@ class CourseResource extends JsonResource
                 return $enrollment ? $enrollment->status : null;
             }),
 
+            'visibility' => [
+                'is_price_visible' => $this->is_price_visible,
+                'is_discount_visible' => $this->is_discount_visible,
+            ],
+            'group_one' => [
+                'headline' => $this->headline_one,
+                'description' => $this->description_one,
+                'image' => $this->image_one ? 'storage/' . $this->image_one : null,
+                'call_to_action' => $this->call_to_action_one,
+                'call_to_action_link' => $this->call_to_action_link_one,
+            ],
+            'group_two' => [
+                'headline' => $this->headline_two,
+                'description' => $this->description_two,
+                'image' => $this->image_two ? 'storage/' . $this->image_two : null,
+                'call_to_action' => $this->call_to_action_two,
+                'call_to_action_link' => $this->call_to_action_link_two,
+            ],
+            'group_three' => [
+                'headline' => $this->headline_three,
+                'description' => $this->description_three,
+                'image' => $this->image_three ? 'storage/' . $this->image_three : null,
+                'call_to_action' => $this->call_to_action_three,
+                'call_to_action_link' => $this->call_to_action_link_three,
+            ],
+
             'number_of_episodes' => $this->number_of_episodes,
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
 
@@ -61,6 +87,31 @@ class CourseResource extends JsonResource
                     }),
                 ]);
             }),
+            'visibility' => [
+                'is_price_visible' => $this->is_price_visible,
+                'is_discount_visible' => $this->is_discount_visible,
+            ],
+            'group_one' => [
+                'headline' => $this->headline_one,
+                'description' => $this->description_one,
+                'image' => $this->image_one ? 'storage/' . $this->image_one : null,
+                'call_to_action' => $this->call_to_action_one,
+                'call_to_action_link' => $this->call_to_action_link_one,
+            ],
+            'group_two' => [
+                'headline' => $this->headline_two,
+                'description' => $this->description_two,
+                'image' => $this->image_two ? 'storage/' . $this->image_two : null,
+                'call_to_action' => $this->call_to_action_two,
+                'call_to_action_link' => $this->call_to_action_link_two,
+            ],
+            'group_three' => [
+                'headline' => $this->headline_three,
+                'description' => $this->description_three,
+                'image' => $this->image_three ? 'storage/' . $this->image_three : null,
+                'call_to_action' => $this->call_to_action_three,
+                'call_to_action_link' => $this->call_to_action_link_three,
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
