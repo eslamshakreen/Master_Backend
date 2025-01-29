@@ -13,6 +13,15 @@ class Lead extends Model
         'name',
         'email',
         'phone',
-        'converted_at'
+        'converted_at',
+        'address',
+        'company',
+        'position',
+        'labels',
+        'email_subscriber_status',
+        'sms_subscriber_status',
+        'last_activity'
     ];
+
+
 }

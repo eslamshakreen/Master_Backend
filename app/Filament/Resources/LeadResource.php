@@ -41,6 +41,7 @@ class LeadResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('الاسم')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('البريد الإلكتروني')->searchable(),
+                Tables\Columns\TextColumn::make('phone')->label('الهاتف')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->label('تاريخ الإدخال')->dateTime('d/m/Y'),
             ])
             ->filters([

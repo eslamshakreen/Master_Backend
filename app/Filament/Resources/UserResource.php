@@ -128,8 +128,10 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->where('role', '=', 'student');
+        return parent::getEloquentQuery()->where('role', '!=', 'student');
     }
+
+
 
     public static function getRelations(): array
     {

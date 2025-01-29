@@ -16,8 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CertificateTemplateResource extends Resource
 {
     protected static ?string $model = CertificateTemplate::class;
-
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'قوالب الشهادات';
+    protected static ?string $pluralLabel = 'قوالب الشهادات';
+    protected static ?string $modelLabel = 'قالب الشهادة';
 
     public static function form(Forms\Form $form): Forms\Form
     {

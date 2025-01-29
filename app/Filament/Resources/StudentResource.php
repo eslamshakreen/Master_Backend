@@ -22,7 +22,7 @@ class StudentResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // لعرض الطلاب فقط
+
         return parent::getEloquentQuery()->where('role', 'student');
     }
 
