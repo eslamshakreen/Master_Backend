@@ -16,7 +16,7 @@ class AboutUsResource extends Resource
     protected static ?string $navigationLabel = 'من نحن';
     protected static ?string $pluralLabel = 'من نحن';
     protected static ?string $modelLabel = 'عن المنصة';
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    protected static ?string $navigationGroup = 'إدارة الموقع';
     protected static ?int $navigationSort = 10; // ترتيب في القائمة الجانبية
 
     public static function form(Forms\Form $form): Forms\Form

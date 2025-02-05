@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class StudentResource extends Resource
 {
@@ -35,7 +37,10 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()
-                    ->required(),
+                    ->required(fn(string $context) => $context === 'create')
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null)
+                    ->dehydrated(fn($state) => !empty($state)),
                 Forms\Components\TextInput::make('phone')
                     ->label('رقم الهاتف')
                     ->tel(),
@@ -69,6 +74,10 @@ class StudentResource extends Resource
                     ->label('الشركة'),
                 Forms\Components\TextInput::make('job_title')
                     ->label('المسمى الوظيفي'),
+                Forms\Components\TextInput::make('number_of_employees')
+                    ->label('عدد الموظفين')
+                    ->numeric()
+                    ->nullable(),
                 // يمكنك إضافة حقول أخرى إذا أردت
             ]);
     }

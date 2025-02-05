@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // تسجيل طالب جديد
+
     public function registerStudent(Request $request)
     {
 
@@ -43,7 +43,7 @@ class AuthController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'role' => 'student', // تأكد من أن لديك حقل 'role' في جدول 'users'
+            'role' => 'student',
         ]);
 
 
@@ -116,7 +116,6 @@ class AuthController extends Controller
 
         return response()->api($user, 0, 'تم التحديث بنجاح');
     }
-    // تسجيل دخول الطالب
     public function loginStudent(Request $request)
     {
         $request->validate([
@@ -126,7 +125,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // التحقق من صحة بيانات الاعتماد وأن المستخدم طالب
+
         if (!$user || !Hash::check($request->password, $user->password) || $user->role !== 'student') {
             return response()->json([
                 'message' => 'Invalid login details'
@@ -145,12 +144,12 @@ class AuthController extends Controller
         return response()->api($data, 0, 'تم تسجيل الدخول بنجاح');
     }
 
-    // جلب بيانات ملف الطالب
+
     public function studentProfile(Request $request)
     {
         $user = $request->user();
 
-        // تحميل بيانات الطالب المرتبطة
+
         $student = Student::where('user_id', $user->id)->first();
 
         return response()->json([
@@ -159,7 +158,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // تسجيل خروج الطالب
     public function logoutStudent(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

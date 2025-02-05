@@ -35,6 +35,7 @@ Route::prefix('courses')->group(function () {
 Route::get('/info', [HeroController::class, 'index']);
 Route::get('/about-us', [AboutUsController::class, 'index']);
 Route::get('/footer', [HeroController::class, 'showFooter']);
+Route::get('/clients', [HeroController::class, 'clientsSection']);
 
 Route::prefix('student')->group(function () {
     Route::post('/register', [AuthController::class, 'registerStudent']);
